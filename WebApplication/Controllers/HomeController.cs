@@ -8,10 +8,11 @@ namespace WebApplication.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index()    // Actionmethod:: Index
         {
             ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
 
+            ViewBag.ViewID = "x" + Guid.NewGuid().ToString("N");
             return View();
         }
 
