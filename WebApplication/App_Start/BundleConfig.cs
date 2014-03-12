@@ -19,10 +19,6 @@ namespace WebApplication
                         "~/Scripts/jquery.validate*"));
 
 
-            bundles.Add(new ScriptBundle("~/bundles/ckeditor").Include(
-                        "~/Scripts/3rdParty/CKEditor/4.3.1/ckeditor.js",
-                        "~/Scripts/3rdParty/CKEditor/4.3.1/adapters/jquery.js"
-                        ));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.

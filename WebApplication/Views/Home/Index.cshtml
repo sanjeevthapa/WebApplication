@@ -15,109 +15,112 @@
 }
 
     <div id="cmspage_@ViewBag.ViewID">
+
         <div id="tabpage_@ViewBag.ViewID" class="heightToFooter box">
             <div id="ckeditor-dialog_@ViewBag.ViewID" title="Content Dialog" style="display:none;">
 			    <div style="height:98%; width:100%;" >
 				    <textarea id="editor_@ViewBag.ViewID"></textarea>
 			    </div>
 			</div> 
+         
 	        <div  class="heightToFooter box" style="height:500px">
 		        <iframe id="IFrame_@ViewBag.ViewID" class="cmsiframe" style="height:100%; width:100%;background-color:white"></iframe>
-	        </div>                                                                           
+	        
+            </div>    
+                                                                                 
         </div>
     </div>
+
+  
+
+
 
 
 @section scripts {
      @Scripts.Render("~/bundles/ckeditor")
      @Scripts.Render("~/bundles/jqueryui")
-                                  
+     <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+                
     <script type="text/javascript">
 
         (function () {
             var viewID = "@ViewBag.ViewID";
             var $cc = $("#cmspage_@ViewBag.ViewID");
             var $iframe = $cc.find("#IFrame_@ViewBag.ViewID");
+            //setting the dom elements
+            var gwindow = $(window);
+            var dialogbox = $('#dialog-modal');
+            var $my_editor,$my_dialog = null;
 
-            $iframe          
+            //center popup script
+            var centerPopup = function () {
+                //center the popup
+                //get the window height
+                windowheight = gwindow.height();
+                //get the window width
+                windowwidth = gwindow.width();
+                //getting the dialog width and height
+                dialogwidth = dialogbox.width();
+                dialogheight = dialogbox.height();
+                //position the dialog box to center
+                $('.ui-dialog').css({
+                    'top': (windowheight - dialogheight) / 2,
+                    'left': (windowwidth - dialogwidth) / 2
+                });
+            }
+            //end center popup script
+
+            $iframe
             .attr("src", "@Url.Content(@ViewBag.GetPageUrl)")
 			.load(
-				function() {
+				function () {
 				    $html = $('html', $iframe.contents());
 				    $html.find(".edit-asset")
 							.on('click', function (event) {
 							    var $asset = $(this);
-							    openCKEditor("@ViewBag.ViewID", $asset);
+							    //display popup with ckeditor
+							    //Initialize the non-modal dialog
+							   $my_dialog =  $("#dialog-modal").dialog({
+							        width: 800,
+							        height: 500,
+							        modal: false,
+                                    zIndex:-1,
+							        create: function () {
+							            $my_editor = CKEDITOR.replace("cms_editor", {
+							                toolbar: 'cmsToolbar',
+							                width: '100%',
+							                height: '100%'
+							            });
+							            $('#save').on('click', function () {
+							                var value = $my_editor.getData();
+							                $html.find('.edit-asset-container').html(value);
+							            });
+							            
+							            
+							        },
+							        close: function () {
+							            //Reset the textarea element
+							            $my_editor.destroy(true);
+
+							            //Reset the dialog div element
+							            $my_dialog.dialog('destroy');
+							        }
+
+
+							    });
+							    //center the popup
+							    centerPopup();
+
 							});
-				    // iframe event
-				    $html
-						.on('click', function () {
-						    //Editor.endEdit($(this));
-						})
+
 				});
 
 
-            // example: http://jsfiddle.net/marsel_aipassa/sd5UT/
-            var openCKEditor = function (viewID, $asset) {
-                __log("... Editor: open");
+          
 
-                var $editor = $asset.find(".edit-asset-container");
 
-                var $iframe = $("#IFrame_@ViewBag.ViewID");
-                var iframeWindow = $iframe.get(0).contentWindow;
 
-                //Insert the overlay div before the dialog div
-                $ckDialog = $("#ckeditor-dialog_@ViewBag.ViewID");
-                $('<div id="overlay_@ViewBag.ViewID" class="ui-widget-overlay" />').insertBefore($ckDialog);
-
-                //Initialize the non-modal dialog
-                var $dialog = $ckDialog.dialog({
-                    autoOpen: false, modal: true,
-                    zIndex: 9999, width: 850, height: 600,
-                    create: function () {
-
-                        $editor = CKEDITOR.replace("#editor_@ViewBag.ViewID",
-							{
-							    toolbar: 'cmsToolbar',
-							    width: '100%',
-							    height: '100%'
-							});
-
-                    },
-                    buttons: {
-                        OK: function () { },
-                        Abbrechen: function () { $(this).dialog('close'); }
-                    },
-
-                    close: function () {
-                        //Remove the overlay div element
-                        $("#overlay_@ViewBag.ViewID").remove();
-
-                        //Reset the textarea element
-                        $editor.destroy(true);
-
-                        //Reset the dialog div element
-                        $dialog.dialog('destroy');
-                    },
-                    open: function (event, ui) {
-                    }
-                });
-
-                //Giving some time for CKEditor instance to be initialized,
-                //the result is the dialog will be displayed at the center.
-                setTimeout(function () {
-                    $dialog.dialog("open");
-                }, 100);
-            }
-
-            var __log = function (log) {
-                console.log(log);
-            }
-
-          })()
+        })()
     </script>
  }
-
-
-
-     
