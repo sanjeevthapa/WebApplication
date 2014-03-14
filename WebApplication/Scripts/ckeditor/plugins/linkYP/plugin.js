@@ -1,40 +1,44 @@
-
-
 (function () {
-
     CKEDITOR.plugins.add('linkYP', {
         lang: "en,de",
-        //requires: ['dialog'],
         icons: "linkyp",
-        allowedContent: "a {*}(*)",
+        allowedContent: "img {*}(*)",
         init: function (editor) {
+            var mypath = this.path;
             var pluginCmd = 'linkYP';
-           
+            editor.ui.addButton(
+               'linkYP.btn',
+               {
+                   label: "linkYP",
+                   command: pluginCmd,
+                   icon: mypath + 'icons/link_16.png'
+               }
+            );
+
             // Add the link and unlink buttons.
-            editor.addCommand(pluginCmd, 
+            editor.addCommand(pluginCmd,
                 {
                     exec: function (editor) {
+                        alert('LinkYP');
+                        return false;
                         //here is where we tell CKEditor what to do.
-                        //var projectid = $(document).find("head meta[name='projectid']").attr("content");
-                        //var pageid = $(document).find("head meta[name='pageid']").attr("content");
-
-                        var param = {
-                            ProjectID: $(document).find("head meta[name='projectid']").attr("content"),
-                            PageID: $(document).find("head meta[name='pageid']").attr("content"),
-                            ViewID: $(document).find("head meta[name='viewid']").attr("content"),
-                            CKEditorSelected: CKEDITOR.plugins.link.getSelectedLink(editor),
-                            okCallback: function (link) {
-                                //var htmltext = HtmlHelper.Unescape($link.wrap("<span></span>").parent().html());
-                                editor.insertHtml(link);
+                        var projectid = $(document).find("head meta[name='projectid']").attr("content");
+                        var pageid = $(document).find("head meta[name='pageid']").attr("content");
+                        var pictureDialog = new parent.PictureDialog();
+                        pictureDialog.Show(
+                            {
+                                ProjectID: projectid,
+                                okCallback: function ($img) {
+                                    var htmltext = HtmlHelper.Unescape($img.wrap("<span></span>").parent().html());
+                                    editor.insertHtml(htmltext);
+                                }
                             }
-                        }
-
-                        var linkDialog = new parent.LinkDialog(param);
-                        linkDialog.Show();
+                         );
                         //editor.insertHtml('This text is inserted when clicking on our new button from the CKEditor toolbar');
                     }
                 }
             );
+
         }
     });
 
@@ -59,8 +63,6 @@
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;');
         }
-
-
     }
 
 

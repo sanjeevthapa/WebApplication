@@ -4,7 +4,9 @@ CKEDITOR.editorConfig = function (config) {
     config.language = 'en';
     // config.uiColor = '#AADC6E';
 
-    config.extraPlugins = 'imageYP,linkYP,image,link';
+    config.extraPlugins = 'imageYP,linkYP';
+
+
 
     // http://docs.ckeditor.com/#!/guide/dev_advanced_content_filter
     config.allowedContent = true;
@@ -23,7 +25,7 @@ CKEDITOR.editorConfig = function (config) {
         //{ name: 'forms', items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'] },
         '/',
         { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'Table', 'HorizontalRule', 'SpecialChar', 'PageBreak'] },
-        { name: 'links', items: ['Link', 'Unlink', 'Iframe', 'Anchor', 'Image'] },
+        { name: 'links', items: ['Link', 'Unlink', 'Iframe', 'Anchor', 'Image',''] },
         '/',
         { name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize'] },
         { name: 'colors', items: ['TextColor', 'BGColor'] },
@@ -31,7 +33,8 @@ CKEDITOR.editorConfig = function (config) {
         { name: 'others', items: ['-'] },
         { name: 'about', items: ['About'] }
     ];
-
+    config.toolbar_cmsToolbar.push(['imageYP.btn']);
+    config.toolbar_cmsToolbar.push(['linkYP.btn']);
 
     config.toolbar_emptyToolbar =
     [

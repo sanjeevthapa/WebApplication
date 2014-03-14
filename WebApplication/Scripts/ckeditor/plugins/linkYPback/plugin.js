@@ -1,28 +1,27 @@
-
-
 (function () {
-
-    CKEDITOR.plugins.add('imageYP', {
+    alert('buhahaa');
+    CKEDITOR.plugins.add('linkYP', {
         lang: "en,de",
-        icons: "imageyp",
+        icons: "linkyp",
         allowedContent: "img {*}(*)",
         init: function (editor) {
+            alert('initialized');
             var mypath = this.path;
-            var pluginCmd = 'imageYP';
+            var pluginCmd = 'linkYP';
             editor.ui.addButton(
-               'imageYP.btn',
+               'linkYP.btn',
                {
-                   label: "ImageYP",
+                   label: "LinkYP",
                    command: pluginCmd,
-                   icon:mypath+'icons/imageyp.png'
+                   icon: mypath + 'icons/link_16.png'
                }
             );
-           
+
             // Add the link and unlink buttons.
-            editor.addCommand(pluginCmd, 
+            editor.addCommand(pluginCmd,
                 {
                     exec: function (editor) {
-                        alert('imageYP');
+                        alert('LinkYP');
                         return false;
                         //here is where we tell CKEditor what to do.
                         var projectid = $(document).find("head meta[name='projectid']").attr("content");
