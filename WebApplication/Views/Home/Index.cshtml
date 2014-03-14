@@ -51,7 +51,8 @@
             //setting the dom elements
             var gwindow = $(window);
             var dialogbox = $('#dialog-modal');
-            var $my_editor,$my_dialog = null;
+            var $my_editor, $my_dialog = null;
+            //initial content
 
             //center popup script
             var centerPopup = function () {
@@ -85,17 +86,35 @@
 							        width: 800,
 							        height: 500,
 							        modal: false,
-                                    zIndex:-1,
-							        create: function () {
+							        zIndex: -1,
+							        buttons: {
+							            "Ok": function () {
+							                var value = $my_editor.getData();
+							                $html.find('.edit-asset-container').html(value);
+							                //Reset the textarea element
+							                $my_editor.destroy(true);
+
+							                //Reset the dialog div element
+							                $my_dialog.dialog('destroy');
+							            },
+							            "Cancel": function () {
+							                //Reset the textarea element
+							                $my_editor.destroy(true);
+
+							                //Reset the dialog div element
+							                $my_dialog.dialog('destroy');
+							            }
+							        },
+                                    create: function () {
+                                        //setting the defaultvalues
+                                        var initialvalue = $html.find('.edit-asset-container').html();
+                                        $('#dialog-modal #cms_editor').val(initialvalue);
 							            $my_editor = CKEDITOR.replace("cms_editor", {
 							                toolbar: 'cmsToolbar',
 							                width: '100%',
 							                height: '100%'
 							            });
-							            $('#save').on('click', function () {
-							                var value = $my_editor.getData();
-							                $html.find('.edit-asset-container').html(value);
-							            });
+							           
 							            
 							            
 							        },
