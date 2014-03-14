@@ -18,7 +18,7 @@ CKEDITOR.editorConfig = function (config) {
     // http://docs.ckeditor.com/#!/guide/dev_advanced_content_filter
     config.allowedContent = true;
 
-    // Define the toolbar buttons you want to have available
+    // Define the toolbar buttons you want to have availableac
     config.toolbar = 'cmsToolbar';
 
     // Toolbar configuration generated automatically by the editor based on config.toolbarGroups.
