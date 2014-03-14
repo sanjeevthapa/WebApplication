@@ -1,10 +1,10 @@
 
 CKEDITOR.editorConfig = function (config) {
     // Define changes to default configuration here. For example:
-    config.language = 'de';
+    config.language = 'en';
     // config.uiColor = '#AADC6E';
 
-    //config.extraPlugins = 'imageYP,linkYP,image,link';
+    config.extraPlugins = 'imageYP,linkYP,image,link';
 
     // http://docs.ckeditor.com/#!/guide/dev_advanced_content_filter
     config.allowedContent = true;
