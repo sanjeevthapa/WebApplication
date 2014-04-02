@@ -109,11 +109,9 @@
                                         var initialvalue = $html.find('.edit-asset-container').html();
                                         $('#dialog-modal #cms_editor').val(initialvalue);
 							            $my_editor = CKEDITOR.replace("cms_editor", {
-							                toolbar: 'cmsToolbar',
-							                width: '100%',
-							                height: '100%'
+							                toolbar: 'cmsToolbar'
 							            });
-							           
+							            $('#dialog-modal').addClass('overwrite');
 							            
 							            
 							        },
