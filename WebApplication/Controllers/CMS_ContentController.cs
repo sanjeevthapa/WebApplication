@@ -13,7 +13,7 @@ namespace WebApplication.Controllers
 
         public ContentResult UpdateHtml()    // Actionmethod:: Index
         {
-            var test = "";
+            var test = "test2";
             return new ContentResult()
             {
                 Content = "",
