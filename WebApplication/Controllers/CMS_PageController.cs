@@ -13,16 +13,22 @@ namespace WebApplication.Controllers
             var minHeight = 300;
             var assetid = 11;
             var contentid = 22;
-            var userDefinedHtml = "test";
+            var blockid = 33;
+            var userDefinedHtml = "<h1>Header</h1><p>test</p>";
 
 
-            var content = "<div class='edit-asset'>"
-                            + "<div class='edit-asset-container' style='height:100%;width:100%;min-height:" + minHeight + "'"
+            var content = "<div class='edit-asset'"
                             + " assettype='html'"
                             + " assetid='" + assetid + "'"
+                            + " blockid='" + blockid + "'"
                             + " contentid='" + contentid + "'>"
-                            + (userDefinedHtml.Length > 0 ? userDefinedHtml : "&nbsp;")
-                            + "</div>"
+                                + "<div contenteditable='true' class='edit-asset-container' style='height:100%;width:100%;min-height:" + minHeight + "'"
+                                    + " assettype='html'"
+                                    + " assetid='" + assetid + "'"
+                                    + " blockid='" + blockid + "'"
+                                    + " contentid='" + contentid + "'>"
+                                    + (userDefinedHtml.Length > 0 ? userDefinedHtml : "&nbsp;")
+                                + "</div>"
                          + "</div>";
 
 
@@ -41,8 +47,9 @@ namespace WebApplication.Controllers
                             .mytable tr:nth-child(2) { height: 300px}
                             .mytable tr:nth-child(3) { height: 50px}
                             .edit-asset:hover { outline: 1px dotted black; }
-                        </style>
-                        </head>
+                        </style>"
+                         + string.Format(@"<link rel=""stylesheet"" type=""text/css"" href=""{0}"">", System.Web.VirtualPathUtility.ToAbsolute("~/Content/CMSPage.css")) +
+                        @"</head>
                         <body>
 	                        <h1>
 		                        my templatepage
@@ -54,7 +61,7 @@ namespace WebApplication.Controllers
                            </table>
                         </body>
                         </html>";
-                
+
 
             return new ContentResult()
             {
@@ -71,4 +78,3 @@ namespace WebApplication.Controllers
         }
     }
 }
-                                                                                                                            

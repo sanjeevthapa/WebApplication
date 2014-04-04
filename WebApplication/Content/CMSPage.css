@@ -1,0 +1,9 @@
+﻿
+
+/* contentedit layout               
+----------------------------------------------------------*/
+  [contenteditable="true"] { padding: 0px; margin: 0px; outline: 2px dotted #CCC; }
+ 
+  [contenteditable="true"]:hover { padding: 0px; margin: 0px; outline: 2px dotted #0090D2; }
+
+

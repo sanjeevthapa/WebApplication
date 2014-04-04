@@ -8,12 +8,9 @@ namespace WebApplication.Controllers
 {
     public class CMS_ContentController : Controller
     {
-
-
-
         public ContentResult UpdateHtml()    // Actionmethod:: Index
         {
-            var test = "test2";
+
             return new ContentResult()
             {
                 Content = "",

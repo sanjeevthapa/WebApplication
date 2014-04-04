@@ -1,142 +1,192 @@
 ﻿@{
-    ViewBag.Title = "PageView";
-    ViewBag.Path = "";
-    ViewBag.GetPageUrl = "~/CMS_Page/GetPage?id=7";
+	ViewBag.Title = "PageView";
+	ViewBag.Path = "";
+	ViewBag.GetPageUrl = "~/CMS_Page/GetPage?id=7";
 }
 
 @section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h1>@ViewBag.Title</h1>
-            </hgroup>
-        </div>
-    </section>
+	<section class="featured">
+		<div class="content-wrapper">
+			<hgroup class="title">
+				<h1>@ViewBag.Title</h1>
+			</hgroup>
+		</div>
+	</section>
 }
 
-    <div id="cmspage_@ViewBag.ViewID">
+    <!-- style -->
+    <link rel="stylesheet" type="text/css" href="~/Content/index.css">
 
-        <div id="tabpage_@ViewBag.ViewID" class="heightToFooter box">
-            <div id="ckeditor-dialog_@ViewBag.ViewID" title="Content Dialog" style="display:none;">
-			    <div style="height:98%; width:100%;" >
-				    <textarea id="editor_@ViewBag.ViewID"></textarea>
-			    </div>
+    <!-- header -->
+	<div id="cmspage_@ViewBag.ViewID">
+
+
+     <!-- page -->
+	 <div id="tabpage_@ViewBag.ViewID" class="heightToFooter box">
+	
+           <!-- dialog -->
+           <div id="ckeditor-dialog_@ViewBag.ViewID" title="Content Dialog" style="display:none;">
+		        <div style="height:0%; width:0%;" >
+					<textarea id="editor_@ViewBag.ViewID"></textarea>
+				</div>
 			</div> 
-         
-	        <div  class="heightToFooter box" style="height:500px">
-		        <iframe id="IFrame_@ViewBag.ViewID" class="cmsiframe" style="height:100%; width:100%;background-color:white"></iframe>
-	        
-            </div>    
-                                                                                 
-        </div>
-    </div>
+		 
+            <!-- iframe -->
+			<div  class="heightToFooter box" style="height:500px">
+				<iframe id="IFrame_@ViewBag.ViewID" class="cmsiframe" style="height:100%; width:100%;background-color:white"></iframe>
+			</div>    
+			
+			<!-- statusbar -->
+           <div id="statusbar" class="applewrap"></div>
+																				 
+		</div>
+	</div>
 
   
-
-
-
-
 @section scripts {
-     @Scripts.Render("~/bundles/jqueryui")
-     <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
-                
-    <script type="text/javascript">
+	 @Scripts.Render("~/bundles/jqueryui")
+	 <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+	<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+				
+	<script type="text/javascript">
 
-        (function () {
-            var viewID = "@ViewBag.ViewID";
-            var $cc = $("#cmspage_@ViewBag.ViewID");
-            var $iframe = $cc.find("#IFrame_@ViewBag.ViewID");
-            //setting the dom elements
-            var gwindow = $(window);
-            var dialogbox = $('#dialog-modal');
-            var $my_editor, $my_dialog = null;
-            //initial content
+		(function () {
+			var viewID = "@ViewBag.ViewID";
+			var $cc = $("#cmspage_@ViewBag.ViewID");
+			var $iframe = $cc.find("#IFrame_@ViewBag.ViewID");
+			//setting the dom elements
+			var gwindow = $(window);
+			var dialogbox = $('#dialog-modal');
+			var $my_editor, $my_dialog = null;
+			//initial content
 
-            //center popup script
-            var centerPopup = function () {
-                //center the popup
-                //get the window height
-                windowheight = gwindow.height();
-                //get the window width
-                windowwidth = gwindow.width();
-                //getting the dialog width and height
-                dialogwidth = dialogbox.width();
-                dialogheight = dialogbox.height();
-                //position the dialog box to center
-                $('.ui-dialog').css({
-                    'top': (windowheight - dialogheight) / 2,
-                    'left': (windowwidth - dialogwidth) / 2
-                });
-            }
-            //end center popup script
+			//center popup script
+			var centerPopup = function () {
+				//center the popup
+				//get the window height
+				windowheight = gwindow.height();
+				//get the window width
+				windowwidth = gwindow.width();
+				//getting the dialog width and height
+				dialogwidth = dialogbox.width();
+				dialogheight = dialogbox.height();
+				//position the dialog box to center
+				$('.ui-dialog').css({
+					'top': (windowheight - dialogheight) / 2,
+					'left': (windowwidth - dialogwidth) / 2
+				});
+			}
+			//end center popup script
 
-            $iframe
-            .attr("src", "@Url.Content(@ViewBag.GetPageUrl)")
+			// local content storage(s)
+			var userContent = {}
+
+
+			$iframe
+			.attr("src", "@Url.Content(@ViewBag.GetPageUrl)")
 			.load(
 				function () {
-				    $html = $('html', $iframe.contents());
-				    $html.find(".edit-asset")
-							.on('click', function (event) {
-							    var $asset = $(this);
-							    //display popup with ckeditor
-							    //Initialize the non-modal dialog
+					$html = $('html', $iframe.contents());
+					$html.find(".edit-asset")
+							.each(function () {
+								// init local content storage(s)
+								var contentid = $(this).attr("contentid")
+								userContent[contentid] = $(this).find('.edit-asset-container').html()
+							})
+							.on('mouseleave', function () {
+								var contentid = $(this).attr("contentid");
+								var html = $(this).find('.edit-asset-container').html();
+								if (html != userContent[contentid]) {
+									userContent[contentid] = html;
+									CMSContentRepository.saveContentData($(this), html);
+									$("#statusbar").text("Content changed has been stored !").fadeIn(1000).fadeOut(2000);
+								}
+							})
+							.on('dblclick', function (event) {
+								var $assetEdit = $(this);
+								//display popup with ckeditor
+								//Initialize the non-modal dialog
 							   $my_dialog =  $("#dialog-modal").dialog({
-							        width: 800,
-							        height: 500,
-							        modal: false,
-							        zIndex: -1,
-							        buttons: {
-							            "Ok": function () {
-							                var value = $my_editor.getData();
-							                $html.find('.edit-asset-container').html(value);
-							                //Reset the textarea element
-							                $my_editor.destroy(true);
+									width: 800,
+									height: 500,
+									modal: true,
+									zIndex: 5000,
+									buttons: {
+										"Ok": function () {
+											var value = $my_editor.getData();
+											$html.find('.edit-asset-container').html(value);
+											//Reset the textarea element
+											$my_editor.destroy(true);
 
-							                //Reset the dialog div element
-							                $my_dialog.dialog('destroy');
-							            },
-							            "Cancel": function () {
-							                //Reset the textarea element
-							                $my_editor.destroy(true);
+											//Reset the dialog div element
+											$my_dialog.dialog('destroy');
+										},
+										"Cancel": function () {
+											//Reset the textarea element
+											$my_editor.destroy(true);
 
-							                //Reset the dialog div element
-							                $my_dialog.dialog('destroy');
-							            }
-							        },
-                                    create: function () {
-                                        //setting the defaultvalues
-                                        var initialvalue = $html.find('.edit-asset-container').html();
-                                        $('#dialog-modal #cms_editor').val(initialvalue);
-							            $my_editor = CKEDITOR.replace("cms_editor", {
-							                toolbar: 'cmsToolbar'
-							            });
-							            $('#dialog-modal').addClass('overwrite');
-							            
-							            
-							        },
-							        close: function () {
-							            //Reset the textarea element
-							            $my_editor.destroy(true);
+											//Reset the dialog div element
+											$my_dialog.dialog('destroy');
+										}
+									},
+									create: function () {
+										//setting the defaultvalues
+										var initialvalue = $html.find('.edit-asset-container').html();
+										$('#dialog-modal #cms_editor').val(initialvalue);
+										$my_editor = CKEDITOR.replace("cms_editor", {
+											toolbar: 'cmsToolbar'
+										});
+										$('#dialog-modal').addClass('overwrite');
+										
+										
+									},
+									close: function () {
+										//Reset the textarea element
+										$my_editor.destroy(true);
 
-							            //Reset the dialog div element
-							            $my_dialog.dialog('destroy');
-							        }
+										//Reset the dialog div element
+										$my_dialog.dialog('destroy');
+									}
 
 
-							    });
-							    //center the popup
-							    centerPopup();
+								});
+								//center the popup
+								centerPopup();
 
 							});
 
 				});
 
 
-          
+				var CMSContentRepository = {
+
+					saveContentData: function ($assetEdit, html) {
+
+						var contentid = $assetEdit.attr("contentid");
+						var assetid = $assetEdit.attr("assetid");
+						var blockid = $assetEdit.attr("blockid");
+
+						if (assetid <= 0 || blockid <= 0) {
+							__log("ERROR: assetid and blockid must be >= 0; assetid:" + assetid + " blockid:" + blockid)
+							return;
+						}
 
 
-
-        })()
-    </script>
+						var $ajaxRequest = $.ajax({
+							writeoperation: true,
+							type: "POST",
+							url: "/CMS_Content/UpdateHtml",
+							dataType: "json",
+							contentType: "text/html",
+							data: html,
+							success: function (data, textStatus, XMLHttpRequest) {
+						   
+							},
+							complete: function () {
+							}
+						});
+					}
+				}
+		})()
+	</script>
  }

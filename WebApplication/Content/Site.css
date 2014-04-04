@@ -585,6 +585,7 @@ td {
 
 tr.pager td {
     padding: 0 0.25em 0 0;
+    margin: 0;
 }
 
 
@@ -754,8 +755,5 @@ tr.pager td {
         footer p {
             margin: 0;
         }
-}
-.overwrite {
-    margin-bottom: -70px;
 }
 
