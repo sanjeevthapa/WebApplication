@@ -26,7 +26,7 @@ CKEDITOR.editorConfig = function (config) {
         '/',
         { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'Table', 'HorizontalRule', 'SpecialChar', 'PageBreak'] },
         //{ name: 'links', items: ['Link', 'Unlink', 'Iframe', 'Anchor', 'Image',''] },
-         { name: 'links', items: ['Link', 'Unlink', 'Iframe', 'Anchor',  ''] },
+         { name: 'links', items: ['Link', 'Unlink', 'Iframe', 'Anchor',  'imageYP.btn', 'linkYP.btn'] },
         '/',
         { name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize'] },
         { name: 'colors', items: ['TextColor', 'BGColor'] },
@@ -34,8 +34,8 @@ CKEDITOR.editorConfig = function (config) {
         { name: 'others', items: ['-'] },
         { name: 'about', items: ['About'] }
     ];
-    config.toolbar_cmsToolbar.push(['imageYP.btn']);
-    config.toolbar_cmsToolbar.push(['linkYP.btn']);
+    //config.toolbar_cmsToolbar.push(['imageYP.btn']);
+    //config.toolbar_cmsToolbar.push(['linkYP.btn']);
 
     config.toolbar_emptyToolbar =
     [

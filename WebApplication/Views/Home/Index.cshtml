@@ -134,9 +134,18 @@
 										var initialvalue = $html.find('.edit-asset-container').html();
 										$('#dialog-modal #cms_editor').val(initialvalue);
 										$my_editor = CKEDITOR.replace("cms_editor", {
-											toolbar: 'cmsToolbar'
+										    extraPlugins: 'imageYP,linkYP',
+										    toolbar: 'cmsToolbar'
 										});
 										$('#dialog-modal').addClass('overwrite');
+
+										$('.ui-dialog').resize(function () {
+										    var finalheight = $('.ui-dialog').height() - (35 + 60 + 20);
+
+										    for (var i = 1; i < 10; i++) {
+										        $("#cke_" + i + "_contents").height((finalheight-140) + "px");
+										    }
+										})
 										
 										
 									},
